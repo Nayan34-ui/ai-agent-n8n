@@ -1,0 +1,169 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -144,
+        -16
+      ],
+      "id": "08cb9a99-526b-4fa6-8997-401b6aaceec6",
+      "name": "When chat message received",
+      "webhookId": "b8336545-a81d-4fff-afd7-7c146d1b3e31"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are an AI assistant. Use Google Search for any current/real-time info. Use Calculator for math.",
+          "maxIterations": 10
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        64,
+        -32
+      ],
+      "id": "982c4f8b-dc93-4565-a03a-cab95da1040c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        128,
+        176
+      ],
+      "id": "213c9cad-3098-43b5-aaec-489d8c107a33",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        416,
+        176
+      ],
+      "id": "dbb77899-47f0-4da1-b712-7f16790ede65",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "google search Use this tool to search Google for any real-time information, current news, weather, prices, or anything happening in the world.",
+        "q": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Search_Query__q_', ``, 'string') }}",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-serpapi.serpApiTool",
+      "typeVersion": 1,
+      "position": [
+        272,
+        176
+      ],
+      "id": "3a9462ad-296f-4505-90cd-70d5b1480a75",
+      "name": "Google search in SerpApi",
+      "credentials": {
+        "serpApi": {
+          "id": "vUEG4eK0HyWXjgQH",
+          "name": "SerpApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -80,
+        176
+      ],
+      "id": "9a37acfa-d2b2-40a5-9fbc-8e27a2684323",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ygPsszOz0dL9Woz7",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google search in SerpApi": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "fe0f7b29-bd22-4bab-b81b-57ffda03ebcb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9e333d1c2ef26c16eb5e673a3a8bb8300396ad12603934b7550e21f5cdef5e0a"
+  },
+  "id": "yB1qTecJ4yDKLY7C",
+  "tags": []
+}
